@@ -16,10 +16,10 @@ export default function singleTestDebugRunner(test: string) {
 				'test',
 				activeFilePath,
 				'--',
-				`-m='${test}'`,
+				`-m='${test}'`
 			],
 			outputCapture: 'std',
-			skipFiles: ['<node_internals>/**/*.js'],
+			skipFiles: ['<node_internals>/**/*.js']
 		});
 	} catch (e) {
 		window.showErrorMessage(e.message);

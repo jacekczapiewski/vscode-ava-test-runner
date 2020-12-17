@@ -9,7 +9,7 @@ export default function allTestsInActiveFileRunner() {
 		const terminal = getTerminal();
 
 		terminal.sendText(
-			`cd ${moduleBaseDir} && npm test ${filePath}`,
+			`cd ${moduleBaseDir} && npm test ${filePath}`
 		);
 	} catch (e) {
 		window.showErrorMessage(e.message);

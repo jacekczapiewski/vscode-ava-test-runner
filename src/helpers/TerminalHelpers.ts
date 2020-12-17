@@ -6,7 +6,7 @@ export function getTerminal() {
 	const { terminals } = window;
 
 	const terminal = terminals.find(
-		({ name }) => name === AVA_TEST_RUNNER_TERMINAL_NAME,
+		({ name }) => name === AVA_TEST_RUNNER_TERMINAL_NAME
 	) ?? window.createTerminal(AVA_TEST_RUNNER_TERMINAL_NAME);
 
 	terminal.show();

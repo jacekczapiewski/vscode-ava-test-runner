@@ -6,6 +6,8 @@
   "rules": {
     "no-tabs": "off",
     "indent": "off",
-    "@typescript-eslint/indent": ["error", "tab"]
+    "@typescript-eslint/indent": ["error", "tab"],
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": ["error", "never"]
   }
 }

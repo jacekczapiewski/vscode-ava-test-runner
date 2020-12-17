@@ -1,63 +1,50 @@
 import * as vscode from 'vscode';
-import { Command, EXTENSION_NAME } from '../constants';
+import { window } from 'vscode';
+import {
+	CodeLensTitle, Command, EXTENSION_NAME, TEST_FIND_REGEX
+} from '../constants';
 
 export default class CodelensProvider implements vscode.CodeLensProvider {
-	private codeLenses: vscode.CodeLens[] = [];
-
-	private regex: RegExp;
-
-	private _onDidChangeCodeLenses: vscode.EventEmitter<void> = new vscode.EventEmitter<void>();
-
-	public readonly onDidChangeCodeLenses: vscode.Event<void> = this
-		._onDidChangeCodeLenses.event;
-
-	constructor() {
-		this.regex = /test\(\s*'(.+)'/g;
-
-		vscode.workspace.onDidChangeConfiguration((_) => {
-			this._onDidChangeCodeLenses.fire();
-		});
-	}
-
+	// eslint-disable-next-line class-methods-use-this
 	public provideCodeLenses(
-		document: vscode.TextDocument,
-		token: vscode.CancellationToken,
+		document: vscode.TextDocument
 	): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-		this.codeLenses = [];
-		const regex = new RegExp(this.regex);
-		const text = document.getText();
-		let matches;
-		while ((matches = regex.exec(text)) !== null) {
-			const line = document.lineAt(document.positionAt(matches.index).line);
-			const indexOf = line.text.indexOf(matches[0]);
-			const position = new vscode.Position(line.lineNumber, indexOf);
-			const range = document.getWordRangeAtPosition(
-				position,
-				new RegExp(this.regex),
-			);
-			if (range) {
-				const test = matches[1].replace(/\\'/g, "'");
-				const runCommand = {
-					title: 'Run',
-					command: `${EXTENSION_NAME}.${Command.RUN_SINGLE_TEST}`,
-					arguments: [test],
-				};
-				const debugCommand = {
-					title: 'Debug',
-					command: `${EXTENSION_NAME}.${Command.DEBUG_SINGLE_TEST}`,
-					arguments: [test],
-				};
-				this.codeLenses.push(new vscode.CodeLens(range, runCommand));
-				this.codeLenses.push(new vscode.CodeLens(range, debugCommand));
-			}
-		}
-		return this.codeLenses;
-	}
+		try {
+			const codeLenses: vscode.CodeLens[] = [];
+			const text = document.getText();
+			let matches = TEST_FIND_REGEX.exec(text);
 
-	public resolveCodeLens(
-		codeLens: vscode.CodeLens,
-		token: vscode.CancellationToken,
-	) {
-		return codeLens;
+			while (matches !== null) {
+				const line = document.lineAt(document.positionAt(matches.index).line);
+				const indexOf = line.text.indexOf(matches[0]);
+				const position = new vscode.Position(line.lineNumber, indexOf);
+				const range = document.getWordRangeAtPosition(
+					position,
+					new RegExp(TEST_FIND_REGEX)
+				);
+				if (range) {
+					const test = matches[1].replace(/\\'/g, "'");
+					const runCommand = {
+						title: CodeLensTitle.RUN,
+						command: `${EXTENSION_NAME}.${Command.RUN_SINGLE_TEST}`,
+						arguments: [test]
+					};
+					const debugCommand = {
+						title: CodeLensTitle.DEBUG,
+						command: `${EXTENSION_NAME}.${Command.DEBUG_SINGLE_TEST}`,
+						arguments: [test]
+					};
+					codeLenses.push(new vscode.CodeLens(range, runCommand));
+					codeLenses.push(new vscode.CodeLens(range, debugCommand));
+				}
+
+				matches = TEST_FIND_REGEX.exec(text);
+			}
+			return codeLenses;
+		} catch (e) {
+			window.showErrorMessage(e.message);
+		}
+
+		return [];
 	}
 }

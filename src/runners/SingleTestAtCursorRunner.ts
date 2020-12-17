@@ -18,7 +18,7 @@ export default function singleTestAtCursorRunner() {
 		const position = new Position(line.lineNumber, indexOf);
 		const range = document.getWordRangeAtPosition(
 			position,
-			TEST_FIND_REGEX,
+			TEST_FIND_REGEX
 		);
 
 		if (range) {
