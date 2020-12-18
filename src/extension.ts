@@ -41,7 +41,10 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(debugSingleTest);
 
 	vscode.languages.registerCodeLensProvider(
-		'typescript',
+		[
+			'javascript',
+			'typescript'
+		],
 		new CodelensProvider()
 	);
 }
