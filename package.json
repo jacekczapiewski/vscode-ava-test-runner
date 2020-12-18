@@ -2,16 +2,16 @@
   "name": "ava-test-runner",
   "displayName": "ava-test-runner",
   "description": "AVA test runner",
-  "version": "0.0.4",
+  "version": "1.0.0",
+  "repository": "https://github.com/jacekczapiewski/vscode-ava-test-runner",
   "engines": {
     "vscode": "^1.50.0"
   },
   "categories": [
-    "Testing"
+    "Other"
   ],
-  "publisher": "jczapiewski",
+  "publisher": "JacekCzapiewski",
   "activationEvents": [
-    "onCommand:ava-test-runner.RUN_ALL_TESTS_IN_ACTIVE_FILE",
     "*"
   ],
   "main": "./out/extension.js",
