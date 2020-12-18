@@ -11,28 +11,28 @@ export function activate(context: vscode.ExtensionContext) {
 		`${EXTENSION_NAME}.${Command.RUN_ALL_TESTS_IN_ACTIVE_FILE}`,
 		async () => {
 			allTestsInActiveFileRunner();
-		},
+		}
 	);
 
 	const runSingleTestCommand = vscode.commands.registerCommand(
 		`${EXTENSION_NAME}.${Command.RUN_SINGLE_TEST}`,
 		async (test) => {
 			singleTestRunner(test);
-		},
+		}
 	);
 
 	const runSingleTestAtCursor = vscode.commands.registerCommand(
 		`${EXTENSION_NAME}.${Command.RUN_SINGLE_TEST_AT_CURSOR}`,
 		async () => {
 			singleTestAtCursorRunner();
-		},
+		}
 	);
 
 	const debugSingleTest = vscode.commands.registerCommand(
 		`${EXTENSION_NAME}.${Command.DEBUG_SINGLE_TEST}`,
 		async (test) => {
 			singleTestDebugRunner(test);
-		},
+		}
 	);
 
 	context.subscriptions.push(runAllTestsInActiveFileCommand);
@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.languages.registerCodeLensProvider(
 		'typescript',
-		new CodelensProvider(),
+		new CodelensProvider()
 	);
 }
 

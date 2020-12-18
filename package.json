@@ -12,8 +12,6 @@
   "publisher": "jczapiewski",
   "activationEvents": [
     "onCommand:ava-test-runner.RUN_ALL_TESTS_IN_ACTIVE_FILE",
-    "onCommand:ava-test-runner.RUN_SINGLE_TEST",
-    "onCommand:ava-test-runner.DEBUG_SINGLE_TEST",
     "*"
   ],
   "main": "./out/extension.js",
@@ -31,7 +29,32 @@
         "mac": "cmd+t cmd+r",
         "when": "editorTextFocus"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "AVA",
+      "properties": {
+        "ava.directoryReplaceFrom": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Test file path replace source."
+        },
+        "ava.directoryReplaceTo": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Test file path replace target."
+        },
+        "ava.extensionReplaceFrom": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Test file extension replace source."
+        },
+        "ava.extensionReplaceTo": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Test file extension replace target."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

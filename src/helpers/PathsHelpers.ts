@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import NoActiveFileError from '../errors/NoActiveFileError';
 import NodeModulesNotFound from '../errors/NodeModulesNotFound';
+import { getExtensionConfiguration } from './ConfigurationHelpers';
 
 export function getActiveFilePath() {
 	const activeEditor = window.activeTextEditor;
@@ -15,13 +16,27 @@ export function getActiveFilePath() {
 }
 
 export function getActiveTestFilePath() {
-	const activeFilePath = getActiveFilePath();
+	const extensionConfiguration = getExtensionConfiguration();
+	let activeTestFilePath = getActiveFilePath();
 
-	const filePath = activeFilePath
-		.replace(/\/tests/, '/dist-tests')
-		.replace('.ts', '.js');
+	if (
+		extensionConfiguration.directoryReplaceFrom
+		&& extensionConfiguration.directoryReplaceTo
+	) {
+		activeTestFilePath = activeTestFilePath.replace(
+			extensionConfiguration.directoryReplaceFrom,
+			extensionConfiguration.directoryReplaceTo
+		);
+	}
 
-	return filePath;
+	if (extensionConfiguration.extensionReplaceFrom && extensionConfiguration.extensionReplaceTo) {
+		activeTestFilePath = activeTestFilePath.replace(
+			extensionConfiguration.extensionReplaceFrom,
+			extensionConfiguration.extensionReplaceTo
+		);
+	}
+
+	return activeTestFilePath;
 }
 
 export function getModuleBaseDir(): string {
