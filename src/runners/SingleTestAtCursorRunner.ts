@@ -10,15 +10,16 @@ export default function singleTestAtCursorRunner() {
 
 	let matchedLine;
 	let matchedTest;
-	let matches = TEST_FIND_REGEX.exec(text);
+	let matches: RegExpExecArray | null;
 
-	while (matches !== null) {
+	// eslint-disable-next-line no-cond-assign
+	while ((matches = TEST_FIND_REGEX.exec(text)) !== null) {
 		const line = document.lineAt(document.positionAt(matches.index).line);
 		const indexOf = line.text.indexOf(matches[0]);
 		const position = new Position(line.lineNumber, indexOf);
 		const range = document.getWordRangeAtPosition(
 			position,
-			TEST_FIND_REGEX
+			/test\(\s*'(.+)'/
 		);
 
 		if (range) {
@@ -30,8 +31,6 @@ export default function singleTestAtCursorRunner() {
 			matchedLine = line.lineNumber;
 			matchedTest = matches[1].replace(/\\'/g, "'");
 		}
-
-		matches = TEST_FIND_REGEX.exec(text);
 	}
 
 	window.showErrorMessage('Test at cursor wasn\'t found.');
