@@ -33,5 +33,10 @@ export default function singleTestAtCursorRunner() {
 		}
 	}
 
+	if (matchedTest) {
+		singleTestRunner(matchedTest);
+		return;
+	}
+
 	window.showErrorMessage('Test at cursor wasn\'t found.');
 }

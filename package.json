@@ -2,7 +2,7 @@
   "name": "ava-test-runner",
   "displayName": "ava-test-runner",
   "description": "AVA test runner",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": "https://github.com/jacekczapiewski/vscode-ava-test-runner",
   "engines": {
     "vscode": "^1.50.0"
