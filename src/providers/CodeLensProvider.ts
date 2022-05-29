@@ -17,27 +17,33 @@ export default class CodelensProvider implements vscode.CodeLensProvider {
 			while (matches !== null) {
 				const line = document.lineAt(document.positionAt(matches.index).line);
 				const indexOf = line.text.indexOf(matches[0]);
-				const position = new vscode.Position(line.lineNumber, indexOf);
-				const range = document.getWordRangeAtPosition(
-					position,
-					new RegExp(TEST_FIND_REGEX)
-				);
-				if (range) {
-					const test = matches[1].replace(/\\'/g, "'");
-					const runCommand = {
-						title: CodeLensTitle.RUN,
-						command: `${EXTENSION_NAME}.${Command.RUN_SINGLE_TEST}`,
-						arguments: [test]
-					};
-					const debugCommand = {
-						title: CodeLensTitle.DEBUG,
-						command: `${EXTENSION_NAME}.${Command.DEBUG_SINGLE_TEST}`,
-						arguments: [test]
-					};
-					codeLenses.push(new vscode.CodeLens(range, runCommand));
-					codeLenses.push(new vscode.CodeLens(range, debugCommand));
-				}
 
+				// Multiline test declaration has negative indexOf
+				if (indexOf > -1) {
+					const position = new vscode.Position(line.lineNumber, indexOf);
+					const range = document.getWordRangeAtPosition(
+						position,
+						new RegExp(TEST_FIND_REGEX)
+					);
+					if (range) {
+						const test = matches[1].replace(/\\'/g, "'");
+
+						const runCommand = {
+							title: CodeLensTitle.RUN,
+							command: `${EXTENSION_NAME}.${Command.RUN_SINGLE_TEST}`,
+							arguments: [test]
+						};
+
+						const debugCommand = {
+							title: CodeLensTitle.DEBUG,
+							command: `${EXTENSION_NAME}.${Command.DEBUG_SINGLE_TEST}`,
+							arguments: [test]
+						};
+
+						codeLenses.push(new vscode.CodeLens(range, runCommand));
+						codeLenses.push(new vscode.CodeLens(range, debugCommand));
+					}
+				}
 				matches = TEST_FIND_REGEX.exec(text);
 			}
 			return codeLenses;
